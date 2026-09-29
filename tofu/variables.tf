@@ -4,8 +4,8 @@ variable "cloud_provider" {
   default     = "hetzner"
 
   validation {
-    condition     = contains(["hetzner", "digitalocean"], var.cloud_provider)
-    error_message = "cloud_provider must be one of: hetzner, digitalocean."
+    condition     = contains(["hetzner", "digitalocean", "aws"], var.cloud_provider)
+    error_message = "cloud_provider must be one of: hetzner, digitalocean, aws."
   }
 }
 
@@ -71,4 +71,10 @@ variable "write_inventory" {
   description = "Write the Ansible inventory from the apply, so there is no manual copy step."
   type        = bool
   default     = true
+}
+
+variable "aws_region" {
+  description = "Concrete AWS region for the provider. Kept separate from the neutral region variable because the provider has to be configured before any module is selected."
+  type        = string
+  default     = "eu-central-1"
 }

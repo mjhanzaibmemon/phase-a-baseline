@@ -11,6 +11,11 @@ locals {
       "eu-west"    = "ams3"
       "us-east"    = "nyc3"
     }
+    aws = {
+      "eu-central" = "eu-central-1"
+      "eu-west"    = "eu-west-1"
+      "us-east"    = "us-east-1"
+    }
   }
 
   size_map = {
@@ -23,6 +28,11 @@ locals {
       small  = "s-2vcpu-4gb"
       medium = "s-4vcpu-8gb"
       large  = "s-8vcpu-16gb"
+    }
+    aws = {
+      small  = "t3.small"
+      medium = "t3.medium"
+      large  = "t3.large"
     }
   }
 
@@ -57,8 +67,20 @@ module "digitalocean" {
   user_data         = local.cloud_init
 }
 
+module "aws" {
+  source = "./modules/aws"
+  count  = var.cloud_provider == "aws" ? 1 : 0
+
+  hostname          = var.hostname
+  instance_type     = local.size_map.aws[var.size]
+  ssh_public_key    = var.ssh_public_key
+  allowed_ssh_cidrs = var.allowed_ssh_cidrs
+  user_data         = local.cloud_init
+}
+
 locals {
   server_ipv4 = coalesce(
+    try(module.aws[0].ipv4, null),
     try(module.hetzner[0].ipv4, null),
     try(module.digitalocean[0].ipv4, null),
   )

@@ -10,7 +10,7 @@ Everything here runs against throwaway infrastructure with synthetic data. No pr
 
 A single Ubuntu 24.04 VPS with:
 
-- Cloud firewall and SSH key registered through OpenTofu, provider chosen by a variable
+- Cloud firewall and SSH key registered through OpenTofu on AWS, Hetzner or DigitalOcean, chosen by one variable
 - A minimal cloud-init first boot, just enough for Ansible to take over
 - Baseline hardening: SSH drop-in config, UFW, fail2ban, unattended upgrades, sysctl
 - Docker from the official repository with log rotation and `no-new-privileges`

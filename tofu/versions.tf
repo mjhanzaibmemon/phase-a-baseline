@@ -2,6 +2,10 @@ terraform {
   required_version = ">= 1.6.0"
 
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.60"
+    }
     hcloud = {
       source  = "hetznercloud/hcloud"
       version = "~> 1.48"
@@ -15,6 +19,10 @@ terraform {
       version = "~> 2.5"
     }
   }
+}
+
+provider "aws" {
+  region = var.aws_region
 }
 
 provider "hcloud" {
