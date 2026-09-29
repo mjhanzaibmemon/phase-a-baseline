@@ -1,0 +1,15 @@
+# Copy to terraform.tfvars. That file is gitignored and should stay that way.
+
+cloud_provider = "hetzner"
+hostname       = "baseline-dev"
+region         = "eu-central"
+size           = "small"
+
+ssh_public_key = "ssh-ed25519 AAAA... you@example.com"
+
+# Narrow this to your own address. "0.0.0.0/0" is the default so a first run
+# does not lock you out, not because it is a good idea to leave it there.
+allowed_ssh_cidrs = ["203.0.113.4/32"]
+
+hcloud_token = "..."
+# do_token   = "..."

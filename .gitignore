@@ -1,0 +1,13 @@
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+*.auto.tfvars
+ansible/inventory/hosts.yml
+*.retry
+evidence/*
+!evidence/.gitkeep
+secrets/
+*.pem
+*.key

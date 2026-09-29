@@ -1,0 +1,76 @@
+---
+- name: Ensure keyring directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Fetch the Tailscale signing key
+  ansible.builtin.get_url:
+    url: "https://pkgs.tailscale.com/stable/ubuntu/{{ ansible_facts['distribution_release'] }}.noarmor.gpg"
+    dest: /etc/apt/keyrings/tailscale-archive-keyring.gpg
+    mode: "0644"
+
+- name: Add the Tailscale repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [signed-by=/etc/apt/keyrings/tailscale-archive-keyring.gpg]
+      https://pkgs.tailscale.com/stable/ubuntu {{ ansible_facts['distribution_release'] }} main
+    filename: tailscale
+    state: present
+
+- name: Install Tailscale
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+    update_cache: true
+
+- name: Enable tailscaled
+  ansible.builtin.service:
+    name: tailscaled
+    state: started
+    enabled: true
+
+- name: Read current tailscale state
+  ansible.builtin.command: tailscale status --json
+  register: ts_status
+  changed_when: false
+  failed_when: false
+
+- name: Join the tailnet
+  ansible.builtin.command: >-
+    tailscale up
+    --authkey={{ tailscale_auth_key }}
+    --hostname={{ tailscale_hostname }}
+    --advertise-tags={{ tailscale_tags }}
+    --accept-routes={{ tailscale_accept_routes | lower }}
+    --ssh={{ tailscale_ssh | lower }}
+  when: (ts_status.stdout | default('{}') | from_json).BackendState | default('NeedsLogin') != 'Running'
+  no_log: true
+  register: ts_up
+  changed_when: ts_up.rc == 0
+
+- name: Confirm the node is actually online before anything closes the front door
+  ansible.builtin.command: tailscale status --json
+  register: ts_verify
+  changed_when: false
+  retries: 10
+  delay: 3
+  until: (ts_verify.stdout | from_json).BackendState | default('') == 'Running'
+
+- name: Record the tailnet address
+  ansible.builtin.copy:
+    content: "{{ (ts_verify.stdout | from_json).Self.TailscaleIPs | join(' ') }}\n"
+    dest: /var/lib/baseline/tailscale-ips
+    owner: root
+    group: root
+    mode: "0640"
+
+# Only now is it safe. Re-running the firewall tasks with the flag off removes the
+# public port 22 rule and leaves SSH reachable over the tailnet only.
+- name: Close public SSH now that the tailnet is verified
+  ansible.builtin.include_role:
+    name: baseline
+    tasks_from: firewall
+  vars:
+    baseline_allow_public_ssh: false

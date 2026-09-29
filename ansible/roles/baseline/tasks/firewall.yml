@@ -1,0 +1,49 @@
+---
+# Kept separate so the tailscale role can re-apply just this part once the tailnet
+# is verified up, without re-running everything else.
+
+- name: Default deny incoming
+  community.general.ufw:
+    direction: incoming
+    policy: deny
+
+- name: Default allow outgoing
+  community.general.ufw:
+    direction: outgoing
+    policy: allow
+
+# Ordering matters. Public SSH stays open while the box is being built, and only
+# closes after the tailscale role has confirmed the node is online. Getting this
+# backwards is how people lock themselves out of their own server.
+- name: Allow public SSH while the box is being built
+  community.general.ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+  when: baseline_allow_public_ssh | bool
+
+- name: Close public SSH once the tailnet is up
+  community.general.ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+    delete: true
+  when: not (baseline_allow_public_ssh | bool)
+
+- name: Allow SSH from the tailnet
+  community.general.ufw:
+    rule: allow
+    src: "{{ baseline_tailnet_cidr }}"
+    port: "22"
+    proto: tcp
+
+- name: Allow tailscale direct connections
+  community.general.ufw:
+    rule: allow
+    port: "41641"
+    proto: udp
+
+- name: Enable ufw
+  community.general.ufw:
+    state: enabled
+    logging: low

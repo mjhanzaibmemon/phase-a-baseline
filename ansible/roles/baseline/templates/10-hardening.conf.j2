@@ -1,0 +1,23 @@
+# Managed by Ansible. Local edits are reverted on the next run, which is the point.
+# sshd takes the first value it sees for a keyword, so this file is the only
+# hardening fragment on the box.
+
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
+PubkeyAuthentication yes
+PermitEmptyPasswords no
+
+MaxAuthTries {{ baseline_ssh_max_auth_tries }}
+MaxSessions 4
+LoginGraceTime {{ baseline_ssh_login_grace }}
+
+X11Forwarding no
+AllowAgentForwarding no
+PermitUserEnvironment no
+
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+AllowGroups sudo

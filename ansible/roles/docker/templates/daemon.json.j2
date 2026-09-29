@@ -1,0 +1,13 @@
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "{{ docker_log_max_size }}",
+    "max-file": "{{ docker_log_max_file }}"
+  },
+  "live-restore": true,
+  "no-new-privileges": true,
+  "userland-proxy": false,
+  "default-ulimits": {
+    "nofile": { "Name": "nofile", "Hard": 65535, "Soft": 65535 }
+  }
+}

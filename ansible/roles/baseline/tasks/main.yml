@@ -1,0 +1,103 @@
+---
+- name: Assert a supported distribution
+  ansible.builtin.assert:
+    that:
+      - ansible_facts['distribution'] == 'Ubuntu'
+      - ansible_facts['distribution_major_version'] is version('24', '>=')
+    fail_msg: "This role targets Ubuntu 24.04 or newer."
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ baseline_timezone }}"
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install baseline packages
+  ansible.builtin.apt:
+    name: "{{ baseline_packages }}"
+    state: present
+
+- name: Create additional admin users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment | default('') }}"
+    groups: sudo
+    append: true
+    shell: /bin/bash
+    password: "!"
+    state: present
+  loop: "{{ baseline_admin_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Install keys for additional admin users
+  ansible.posix.authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1 }}"
+    state: present
+    exclusive: false
+  loop: "{{ baseline_admin_users | subelements('ssh_keys', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }}"
+
+- name: Drop the cloud-init sshd fragment, this role owns sshd now
+  ansible.builtin.file:
+    path: /etc/ssh/sshd_config.d/00-cloud-init-hardening.conf
+    state: absent
+  notify: restart ssh
+
+- name: Install sshd hardening drop-in
+  ansible.builtin.template:
+    src: 10-hardening.conf.j2
+    dest: /etc/ssh/sshd_config.d/10-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+    validate: "/usr/sbin/sshd -t -f %s"
+  notify: restart ssh
+
+- name: Install sysctl hardening
+  ansible.builtin.template:
+    src: 99-hardening.conf.j2
+    dest: /etc/sysctl.d/99-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload sysctl
+
+- name: Configure unattended upgrades
+  ansible.builtin.template:
+    src: 20auto-upgrades.j2
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Configure fail2ban
+  ansible.builtin.template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart fail2ban
+
+- name: Enable fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: started
+    enabled: true
+
+- name: Apply firewall policy
+  ansible.builtin.include_tasks: firewall.yml
+
+- name: Ensure state directory exists
+  ansible.builtin.file:
+    path: /var/lib/baseline
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"

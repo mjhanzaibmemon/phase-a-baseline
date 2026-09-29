@@ -1,0 +1,7 @@
+# Normally written by `tofu apply`. This example is here so the layout is obvious
+# if you ever need to point the playbook at a box OpenTofu did not create.
+all:
+  hosts:
+    baseline-dev:
+      ansible_host: 203.0.113.10
+      ansible_user: deploy

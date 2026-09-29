@@ -1,0 +1,39 @@
+---
+# Non-secret defaults. Anything sensitive belongs in vault.yml, encrypted with
+# ansible-vault, or passed on the command line. Nothing secret is committed here.
+
+baseline_timezone: "UTC"
+
+# Extra accounts beyond the cloud-init deploy user. Removing someone is deleting
+# a line here and re-running, which is the whole point of doing it this way.
+baseline_admin_users: []
+#  - name: contractor
+#    comment: "temporary access, remove at end of engagement"
+#    ssh_keys:
+#      - "ssh-ed25519 AAAA..."
+
+# Starts true so a first run cannot lock you out. The tailscale role flips this
+# to false only after it has confirmed the node is actually online.
+baseline_allow_public_ssh: true
+
+docker_compose_plugin: true
+
+tailscale_hostname: "{{ inventory_hostname }}"
+tailscale_tags: "tag:dev"
+# tailscale_auth_key: set in vault.yml, never here
+
+restic_version: "0.17.3"
+restic_sha256: "REPLACE_WITH_RELEASE_SHA256"   # from the restic GitHub release page
+restic_repository: "s3:https://s3.example.com/bucket/baseline-dev"
+restic_backup_paths:
+  - /etc
+  - /srv
+  - /var/lib/baseline
+restic_keep_daily: 7
+restic_keep_weekly: 4
+restic_max_age_hours: 26
+# restic_password and restic_env: set in vault.yml
+
+monitoring_check_interval: "15min"
+monitoring_disk_threshold_percent: 85
+# monitoring_deadman_url: set in vault.yml, e.g. a healthchecks.io ping URL

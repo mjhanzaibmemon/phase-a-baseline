@@ -1,0 +1,17 @@
+---
+baseline_timezone: "UTC"
+baseline_packages:
+  - ufw
+  - fail2ban
+  - unattended-upgrades
+  - ca-certificates
+  - curl
+  - gnupg
+  - jq
+  - bzip2
+  - rsync
+baseline_admin_users: []
+baseline_allow_public_ssh: true
+baseline_ssh_max_auth_tries: 3
+baseline_ssh_login_grace: 20
+baseline_tailnet_cidr: "100.64.0.0/10"

@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the node health check regularly
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec={{ monitoring_check_interval }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

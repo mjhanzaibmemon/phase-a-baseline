@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Restores the latest snapshot into a scratch directory and compares a canary file
+# by checksum. A backup nobody has restored is a file taking up space.
+set -euo pipefail
+
+set -a
+. /etc/restic/env
+set +a
+
+TARGET=/var/lib/baseline/restore-test
+CANARY=/var/lib/baseline/canary.txt
+
+rm -rf "$TARGET"
+mkdir -p "$TARGET"
+
+START=$(date +%s)
+/usr/local/bin/restic restore latest --target "$TARGET" --include /var/lib/baseline/canary.txt
+END=$(date +%s)
+
+RESTORED="$TARGET$CANARY"
+
+if [[ ! -f "$RESTORED" ]]; then
+  echo "FAIL: canary file was not restored"
+  exit 1
+fi
+
+if ! diff -q "$CANARY" "$RESTORED" >/dev/null; then
+  echo "FAIL: restored canary does not match the original"
+  exit 1
+fi
+
+echo "OK: restore verified in $((END - START))s"
+echo "original_sha256=$(sha256sum "$CANARY" | cut -d' ' -f1)"
+echo "restored_sha256=$(sha256sum "$RESTORED" | cut -d' ' -f1)"

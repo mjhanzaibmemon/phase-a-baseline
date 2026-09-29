@@ -1,0 +1,3 @@
+# Human accounts allowed on this host. Anything with UID >= 1000 that is not
+# listed here counts as an unexpected user and fails the check.
+deploy

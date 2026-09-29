@@ -1,0 +1,11 @@
+---
+monitoring_check_interval: "15min"
+monitoring_disk_threshold_percent: 85
+monitoring_services:
+  - docker
+  - tailscaled
+  - fail2ban
+restic_max_age_hours: 26
+# monitoring_deadman_url comes from vault. The dead man's switch is the point:
+# if this host goes quiet, the absence of a ping is the alert. Silence should
+# never look like health.

@@ -1,0 +1,15 @@
+[Unit]
+Description=restic backup
+After=network-online.target
+Wants=network-online.target
+OnFailure=status-email@%n.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/restic-backup.sh
+Nice=10
+IOSchedulingClass=idle
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/baseline /var/cache

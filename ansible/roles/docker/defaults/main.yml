@@ -1,0 +1,12 @@
+---
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+docker_compose_plugin: true
+# Pin to an exact apt version string for reproducibility, e.g. "5:27.3.1-1~ubuntu.24.04~noble".
+# Left empty here so the repo works on a first read, but a real deployment pins it.
+docker_version: ""
+docker_log_max_size: "10m"
+docker_log_max_file: "3"

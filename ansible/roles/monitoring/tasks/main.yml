@@ -1,0 +1,33 @@
+---
+- name: Install the health check script
+  ansible.builtin.template:
+    src: health-check.sh.j2
+    dest: /usr/local/bin/health-check.sh
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Install the health check service and timer
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - health-check.service
+    - health-check.timer
+  notify: reload systemd
+
+- name: Enable the health check timer
+  ansible.builtin.systemd_service:
+    name: health-check.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+
+- name: Run the health check once so there is a fresh stamp after a rebuild
+  ansible.builtin.command: /usr/local/bin/health-check.sh
+  register: health_first_run
+  changed_when: false
+  failed_when: false

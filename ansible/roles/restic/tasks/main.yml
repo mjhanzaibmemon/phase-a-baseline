@@ -1,0 +1,114 @@
+---
+- name: Fail early if the repository is not configured
+  ansible.builtin.assert:
+    that:
+      - restic_repository | length > 0
+      - restic_password is defined
+    fail_msg: "restic_repository and restic_password must be set, normally from vault."
+
+- name: Download the pinned restic release
+  ansible.builtin.get_url:
+    url: "https://github.com/restic/restic/releases/download/v{{ restic_version }}/restic_{{ restic_version }}_linux_{{ restic_arch }}.bz2"
+    dest: "/usr/local/src/restic_{{ restic_version }}_linux_{{ restic_arch }}.bz2"
+    checksum: "sha256:{{ restic_sha256 }}"
+    mode: "0644"
+  register: restic_download
+
+- name: Unpack restic
+  ansible.builtin.shell: >-
+    bunzip2 -kfc /usr/local/src/restic_{{ restic_version }}_linux_{{ restic_arch }}.bz2
+    > /usr/local/bin/restic
+  args:
+    creates: "/usr/local/bin/restic-{{ restic_version }}.stamp"
+
+- name: Mark the installed version
+  ansible.builtin.file:
+    path: "/usr/local/bin/restic-{{ restic_version }}.stamp"
+    state: touch
+    mode: "0644"
+  changed_when: false
+
+- name: Make restic executable
+  ansible.builtin.file:
+    path: /usr/local/bin/restic
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create the restic config directory
+  ansible.builtin.file:
+    path: /etc/restic
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Write the repository password
+  ansible.builtin.copy:
+    content: "{{ restic_password }}\n"
+    dest: /etc/restic/password
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+
+- name: Write the repository environment
+  ansible.builtin.template:
+    src: restic.env.j2
+    dest: /etc/restic/env
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+
+- name: Initialise the repository if it is new
+  ansible.builtin.shell: |
+    set -a; . /etc/restic/env; set +a
+    /usr/local/bin/restic snapshots >/dev/null 2>&1 || /usr/local/bin/restic init
+  args:
+    executable: /bin/bash
+  register: restic_init
+  changed_when: "'created restic repository' in restic_init.stdout"
+
+- name: Install the backup script
+  ansible.builtin.template:
+    src: restic-backup.sh.j2
+    dest: /usr/local/bin/restic-backup.sh
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Install the restore test script
+  ansible.builtin.template:
+    src: restic-restore-test.sh.j2
+    dest: /usr/local/bin/restic-restore-test.sh
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Install the backup service and timer
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - restic-backup.service
+    - restic-backup.timer
+  notify: reload systemd
+
+- name: Enable the backup timer
+  ansible.builtin.systemd_service:
+    name: restic-backup.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+
+- name: Write the canary file the restore test verifies
+  ansible.builtin.copy:
+    content: "canary for restore verification, do not edit\n"
+    dest: /var/lib/baseline/canary.txt
+    owner: root
+    group: root
+    mode: "0640"

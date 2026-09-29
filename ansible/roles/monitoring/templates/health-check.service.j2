@@ -1,0 +1,10 @@
+[Unit]
+Description=Node health check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/health-check.sh
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/baseline

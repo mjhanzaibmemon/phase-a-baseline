@@ -1,0 +1,25 @@
+---
+- name: Converge the baseline
+  hosts: all
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Confirm this box came from cloud-init, not from someone's fingers
+      ansible.builtin.stat:
+        path: /etc/baseline-bootstrap
+      register: bootstrap_marker
+
+    - name: Fail loudly if the marker is missing
+      ansible.builtin.fail:
+        msg: >-
+          /etc/baseline-bootstrap is missing. This host was not built from this
+          repository, so converging it would hide a manual step rather than remove one.
+      when: not bootstrap_marker.stat.exists
+
+  roles:
+    - baseline
+    - docker
+    - tailscale
+    - restic
+    - monitoring

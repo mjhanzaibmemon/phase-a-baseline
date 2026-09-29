@@ -1,0 +1,8 @@
+---
+tailscale_hostname: "{{ inventory_hostname }}"
+tailscale_tags: "tag:dev"
+tailscale_accept_routes: false
+tailscale_ssh: false
+# tailscale_auth_key comes from vault. An ephemeral, tagged, short-expiry key is
+# the right kind: when it expires the device drops off by itself, so the default
+# state is revoked rather than granted.

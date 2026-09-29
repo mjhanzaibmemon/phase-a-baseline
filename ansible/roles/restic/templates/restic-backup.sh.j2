@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Managed by Ansible.
+set -euo pipefail
+
+set -a
+. /etc/restic/env
+set +a
+
+STAMP=/var/lib/baseline/last-backup
+
+/usr/local/bin/restic backup \
+{% for path in restic_backup_paths %}
+  {{ path }} \
+{% endfor %}
+{% for pattern in restic_exclude_patterns %}
+  --exclude '{{ pattern }}' \
+{% endfor %}
+  --tag scheduled
+
+/usr/local/bin/restic forget \
+  --keep-daily {{ restic_keep_daily }} \
+  --keep-weekly {{ restic_keep_weekly }} \
+  --prune
+
+date -u +%s > "$STAMP"
+echo "backup completed $(date -u --iso-8601=seconds)"

@@ -1,0 +1,4 @@
+# Listening sockets allowed on non-loopback addresses, written as port/proto.
+# Loopback listeners are ignored because nothing outside the box can reach them.
+22/tcp
+41641/udp

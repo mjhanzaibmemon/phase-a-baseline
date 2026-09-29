@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Managed by Ansible. Exits non-zero on the first real problem, writes a stamp on
+# success, and pings the dead man's switch so that silence is treated as failure.
+set -uo pipefail
+
+STAMP=/var/lib/baseline/last-health-ok
+FAILURES=()
+
+for svc in {% for s in monitoring_services %}{{ s }} {% endfor %}; do
+  if ! systemctl is-active --quiet "$svc"; then
+    FAILURES+=("service:$svc")
+  fi
+done
+
+USED=$(df --output=pcent / | tail -1 | tr -dc '0-9')
+if (( USED > {{ monitoring_disk_threshold_percent }} )); then
+  FAILURES+=("disk:${USED}%")
+fi
+
+BACKUP_STAMP=/var/lib/baseline/last-backup
+if [[ -f "$BACKUP_STAMP" ]]; then
+  AGE=$(( ($(date -u +%s) - $(cat "$BACKUP_STAMP")) / 3600 ))
+  if (( AGE > {{ restic_max_age_hours }} )); then
+    FAILURES+=("backup_age:${AGE}h")
+  fi
+else
+  FAILURES+=("backup:never_ran")
+fi
+
+if (( ${#FAILURES[@]} > 0 )); then
+  printf 'FAIL %s\n' "${FAILURES[*]}"
+{% if monitoring_deadman_url is defined %}
+  curl -fsS -m 10 --retry 3 --data-binary "${FAILURES[*]}" "{{ monitoring_deadman_url }}/fail" >/dev/null || true
+{% endif %}
+  exit 1
+fi
+
+date -u +%s > "$STAMP"
+{% if monitoring_deadman_url is defined %}
+curl -fsS -m 10 --retry 3 "{{ monitoring_deadman_url }}" >/dev/null || true
+{% endif %}
+echo "OK $(date -u --iso-8601=seconds)"

@@ -1,0 +1,12 @@
+# Managed by Ansible.
+[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+backend  = systemd
+ignoreip = 127.0.0.1/8 ::1 {{ baseline_tailnet_cidr }}
+
+[sshd]
+enabled = true
+port    = 22
+mode    = aggressive

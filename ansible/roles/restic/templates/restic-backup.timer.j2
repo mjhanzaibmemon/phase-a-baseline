@@ -1,0 +1,10 @@
+[Unit]
+Description=Run restic backup on a schedule
+
+[Timer]
+OnCalendar={{ restic_schedule }}
+RandomizedDelaySec=30m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

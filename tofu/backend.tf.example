@@ -1,0 +1,20 @@
+# Copy to backend.tf and fill in. State belongs off your laptop: if it lives on one
+# machine, nobody else can destroy cleanly and a lost disk means orphaned resources.
+#
+# Any S3 compatible store works (AWS S3, Backblaze B2, Hetzner Object Storage, MinIO).
+
+terraform {
+  backend "s3" {
+    bucket = "CHANGEME-tfstate"
+    key    = "phase-a-baseline/terraform.tfstate"
+    region = "eu-central-1"
+
+    # For non-AWS S3 compatible endpoints:
+    # endpoints                   = { s3 = "https://s3.eu-central-1.example.com" }
+    # skip_credentials_validation = true
+    # skip_region_validation      = true
+    # skip_requesting_account_id  = true
+
+    use_lockfile = true
+  }
+}
