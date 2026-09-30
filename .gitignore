@@ -11,4 +11,4 @@ evidence/*
 secrets/
 *.pem
 *.key
-ansible/group_vars/vault.yml
+ansible/group_vars/all/vault.yml

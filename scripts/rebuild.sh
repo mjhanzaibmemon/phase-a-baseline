@@ -13,11 +13,17 @@ mkdir -p "$EVIDENCE"
 export ANSIBLE_FORCE_COLOR=0
 STARTED=$(date -u --iso-8601=seconds)
 
+# init comes first. On a fresh clone the modules and providers are not installed
+# yet, so a destroy would fail before it ever reached the apply. Someone rebuilding
+# this from nothing hits that on their first run, which is the run that matters.
+echo "=== init ===" | tee "$EVIDENCE/rebuild.log"
+(cd "$ROOT/tofu" && tofu init -input=false) 2>&1 | tee -a "$EVIDENCE/rebuild.log"
+
 echo "=== destroy ===" | tee "$EVIDENCE/destroy.log"
 (cd "$ROOT/tofu" && tofu destroy -auto-approve) 2>&1 | tee -a "$EVIDENCE/destroy.log"
 
-echo "=== apply ===" | tee "$EVIDENCE/rebuild.log"
-(cd "$ROOT/tofu" && tofu init -input=false && tofu apply -auto-approve -input=false) 2>&1 |
+echo "=== apply ===" | tee -a "$EVIDENCE/rebuild.log"
+(cd "$ROOT/tofu" && tofu apply -auto-approve -input=false) 2>&1 |
   tee -a "$EVIDENCE/rebuild.log"
 
 echo "=== wait for ssh ===" | tee -a "$EVIDENCE/rebuild.log"

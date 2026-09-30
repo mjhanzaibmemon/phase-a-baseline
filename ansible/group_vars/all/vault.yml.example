@@ -1,7 +1,7 @@
 ---
 # Copy to vault.yml, fill in, then encrypt it:
 #
-#   ansible-vault encrypt ansible/group_vars/vault.yml
+#   ansible-vault encrypt ansible/group_vars/all/vault.yml
 #
 # vault.yml itself is gitignored. The example is not, so the required shape is
 # obvious without anyone's secrets being in the repo.

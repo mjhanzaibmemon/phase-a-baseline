@@ -37,12 +37,16 @@
   changed_when: false
   failed_when: false
 
+# Tags are how an ACL gets scoped to a machine instead of to whoever created it,
+# so tagging is the right default. It only works if the tailnet ACL declares a
+# tagOwners entry for that tag, and the node is refused at join time if it does
+# not. Leaving tailscale_tags empty drops the flag rather than failing.
 - name: Join the tailnet
   ansible.builtin.command: >-
     tailscale up
     --authkey={{ tailscale_auth_key }}
     --hostname={{ tailscale_hostname }}
-    --advertise-tags={{ tailscale_tags }}
+    {% if tailscale_tags | length > 0 %}--advertise-tags={{ tailscale_tags }}{% endif %}
     --accept-routes={{ tailscale_accept_routes | lower }}
     --ssh={{ tailscale_ssh | lower }}
   when: (ts_status.stdout | default('{}') | from_json).BackendState | default('NeedsLogin') != 'Running'
