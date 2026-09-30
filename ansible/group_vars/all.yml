@@ -23,7 +23,7 @@ tailscale_tags: "tag:dev"
 # tailscale_auth_key: set in vault.yml, never here
 
 restic_version: "0.17.3"
-restic_sha256: "REPLACE_WITH_RELEASE_SHA256"   # from the restic GitHub release page
+restic_sha256: "5097faeda6aa13167aae6e36efdba636637f8741fed89bbf015678334632d4d3"  # restic 0.17.3 linux_amd64, from the release SHA256SUMS
 restic_repository: "s3:https://s3.example.com/bucket/baseline-dev"
 restic_backup_paths:
   - /etc

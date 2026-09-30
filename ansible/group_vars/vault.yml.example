@@ -1,0 +1,27 @@
+---
+# Copy to vault.yml, fill in, then encrypt it:
+#
+#   ansible-vault encrypt ansible/group_vars/vault.yml
+#
+# vault.yml itself is gitignored. The example is not, so the required shape is
+# obvious without anyone's secrets being in the repo.
+
+# Ephemeral, tagged, short expiry. When it expires the device drops off by itself,
+# which means the default state is revoked rather than granted.
+tailscale_auth_key: "tskey-auth-REPLACE"
+
+# Anything but this password can be rebuilt. Lose it and the backups are noise,
+# so it lives somewhere other than the machine being backed up.
+restic_password: "REPLACE_WITH_A_LONG_RANDOM_STRING"
+
+restic_repository: "s3:s3.us-west-2.amazonaws.com/REPLACE-bucket-name/baseline-dev"
+
+# Credentials for a dedicated IAM user that can reach this one bucket and nothing
+# else. Never the account you use for anything important: this key sits on the box
+# being backed up, so treat it as already compromised and scope it accordingly.
+restic_env:
+  AWS_ACCESS_KEY_ID: "REPLACE"
+  AWS_SECRET_ACCESS_KEY: "REPLACE"
+
+# Optional. A healthchecks.io style ping URL turns silence into an alert.
+# monitoring_deadman_url: "https://hc-ping.com/REPLACE"

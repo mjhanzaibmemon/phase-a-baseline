@@ -5,16 +5,19 @@ locals {
       "eu-central" = "nbg1"
       "eu-west"    = "fsn1"
       "us-east"    = "ash"
+      "us-west"    = "hil"
     }
     digitalocean = {
       "eu-central" = "fra1"
       "eu-west"    = "ams3"
       "us-east"    = "nyc3"
+      "us-west"    = "sfo3"
     }
     aws = {
       "eu-central" = "eu-central-1"
       "eu-west"    = "eu-west-1"
       "us-east"    = "us-east-1"
+      "us-west"    = "us-west-2"
     }
   }
 
