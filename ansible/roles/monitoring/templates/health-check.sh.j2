@@ -5,29 +5,32 @@ set -uo pipefail
 
 STAMP=/var/lib/baseline/last-health-ok
 FAILURES=()
+FAIL_COUNT=0
 
 for svc in {% for s in monitoring_services %}{{ s }} {% endfor %}; do
   if ! systemctl is-active --quiet "$svc"; then
-    FAILURES+=("service:$svc")
+    FAILURES+=("service:$svc"); FAIL_COUNT=$((FAIL_COUNT + 1))
   fi
 done
 
 USED=$(df --output=pcent / | tail -1 | tr -dc '0-9')
 if (( USED > {{ monitoring_disk_threshold_percent }} )); then
-  FAILURES+=("disk:${USED}%")
+  FAILURES+=("disk:${USED}%"); FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 
 BACKUP_STAMP=/var/lib/baseline/last-backup
 if [[ -f "$BACKUP_STAMP" ]]; then
   AGE=$(( ($(date -u +%s) - $(cat "$BACKUP_STAMP")) / 3600 ))
   if (( AGE > {{ restic_max_age_hours }} )); then
-    FAILURES+=("backup_age:${AGE}h")
+    FAILURES+=("backup_age:${AGE}h"); FAIL_COUNT=$((FAIL_COUNT + 1))
   fi
 else
-  FAILURES+=("backup:never_ran")
+  FAILURES+=("backup:never_ran"); FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 
-if (( ${#FAILURES[@]} > 0 )); then
+# Counted as we go, on purpose. Bash array-length syntax opens with the same two
+# characters Jinja uses to start a comment, so writing it here breaks the render.
+if (( FAIL_COUNT > 0 )); then
   printf 'FAIL %s\n' "${FAILURES[*]}"
 {% if monitoring_deadman_url is defined %}
   curl -fsS -m 10 --retry 3 --data-binary "${FAILURES[*]}" "{{ monitoring_deadman_url }}/fail" >/dev/null || true

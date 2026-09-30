@@ -1,0 +1,609 @@
+=== init ===
+
+[0m[1mInitializing the backend...[0m
+[0m[1mInitializing modules...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Reusing previous version of hetznercloud/hcloud from the dependency lock file
+- Reusing previous version of digitalocean/digitalocean from the dependency lock file
+- Reusing previous version of hashicorp/local from the dependency lock file
+- Using previously-installed hashicorp/local v2.9.1
+- Using previously-installed hetznercloud/hcloud v1.69.0
+- Using previously-installed digitalocean/digitalocean v2.102.0
+- Using previously-installed hashicorp/aws v5.100.0
+
+[0m[1m[32mOpenTofu has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with OpenTofu. Try running "tofu plan" to see
+any changes that are required for your infrastructure. All OpenTofu commands
+should now work.
+
+If you ever set or change modules or backend configuration for OpenTofu,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+=== apply ===
+[0m[1mmodule.aws[0].data.aws_vpc.default: Reading...[0m[0m
+[0m[1mmodule.aws[0].data.aws_ami.ubuntu: Reading...[0m[0m
+[0m[1mmodule.aws[0].data.aws_vpc.default: Read complete after 0s [id=vpc-093194f8335ae7783][0m
+[0m[1mmodule.aws[0].data.aws_subnets.default: Reading...[0m[0m
+[0m[1mmodule.aws[0].data.aws_ami.ubuntu: Read complete after 0s [id=ami-07a134137a631b892][0m
+[0m[1mmodule.aws[0].data.aws_subnets.default: Read complete after 0s [id=us-west-2][0m
+
+OpenTofu used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+OpenTofu will perform the following actions:
+
+[1m  # local_file.inventory[0][0m will be created
+[0m  [32m+[0m[0m resource "local_file" "inventory" {
+      [32m+[0m[0m content              = (known after apply)
+      [32m+[0m[0m content_base64sha256 = (known after apply)
+      [32m+[0m[0m content_base64sha512 = (known after apply)
+      [32m+[0m[0m content_md5          = (known after apply)
+      [32m+[0m[0m content_sha1         = (known after apply)
+      [32m+[0m[0m content_sha256       = (known after apply)
+      [32m+[0m[0m content_sha512       = (known after apply)
+      [32m+[0m[0m directory_permission = "0777"
+      [32m+[0m[0m file_permission      = "0600"
+      [32m+[0m[0m filename             = "./../ansible/inventory/hosts.yml"
+      [32m+[0m[0m id                   = (known after apply)
+    }
+
+[1m  # module.aws[0].aws_instance.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_instance" "this" {
+      [32m+[0m[0m ami                                  = "ami-07a134137a631b892"
+      [32m+[0m[0m arn                                  = (known after apply)
+      [32m+[0m[0m associate_public_ip_address          = true
+      [32m+[0m[0m availability_zone                    = (known after apply)
+      [32m+[0m[0m cpu_core_count                       = (known after apply)
+      [32m+[0m[0m cpu_threads_per_core                 = (known after apply)
+      [32m+[0m[0m disable_api_stop                     = (known after apply)
+      [32m+[0m[0m disable_api_termination              = (known after apply)
+      [32m+[0m[0m ebs_optimized                        = (known after apply)
+      [32m+[0m[0m enable_primary_ipv6                  = (known after apply)
+      [32m+[0m[0m get_password_data                    = false
+      [32m+[0m[0m host_id                              = (known after apply)
+      [32m+[0m[0m host_resource_group_arn              = (known after apply)
+      [32m+[0m[0m iam_instance_profile                 = (known after apply)
+      [32m+[0m[0m id                                   = (known after apply)
+      [32m+[0m[0m instance_initiated_shutdown_behavior = (known after apply)
+      [32m+[0m[0m instance_lifecycle                   = (known after apply)
+      [32m+[0m[0m instance_state                       = (known after apply)
+      [32m+[0m[0m instance_type                        = "t3.small"
+      [32m+[0m[0m ipv6_address_count                   = (known after apply)
+      [32m+[0m[0m ipv6_addresses                       = (known after apply)
+      [32m+[0m[0m key_name                             = "baseline-dev-key"
+      [32m+[0m[0m monitoring                           = (known after apply)
+      [32m+[0m[0m outpost_arn                          = (known after apply)
+      [32m+[0m[0m password_data                        = (known after apply)
+      [32m+[0m[0m placement_group                      = (known after apply)
+      [32m+[0m[0m placement_partition_number           = (known after apply)
+      [32m+[0m[0m primary_network_interface_id         = (known after apply)
+      [32m+[0m[0m private_dns                          = (known after apply)
+      [32m+[0m[0m private_ip                           = (known after apply)
+      [32m+[0m[0m public_dns                           = (known after apply)
+      [32m+[0m[0m public_ip                            = (known after apply)
+      [32m+[0m[0m secondary_private_ips                = (known after apply)
+      [32m+[0m[0m security_groups                      = (known after apply)
+      [32m+[0m[0m source_dest_check                    = true
+      [32m+[0m[0m spot_instance_request_id             = (known after apply)
+      [32m+[0m[0m subnet_id                            = "subnet-0f5d1c29288af5c04"
+      [32m+[0m[0m tags                                 = {
+          [32m+[0m[0m "ManagedBy" = "opentofu"
+          [32m+[0m[0m "Name"      = "baseline-dev"
+          [32m+[0m[0m "Purpose"   = "disposable-baseline"
+        }
+      [32m+[0m[0m tags_all                             = {
+          [32m+[0m[0m "ManagedBy" = "opentofu"
+          [32m+[0m[0m "Name"      = "baseline-dev"
+          [32m+[0m[0m "Purpose"   = "disposable-baseline"
+        }
+      [32m+[0m[0m tenancy                              = (known after apply)
+      [32m+[0m[0m user_data                            = "1a2e86719975364c96d22b07c2df3e0115ba8e39"
+      [32m+[0m[0m user_data_base64                     = (known after apply)
+      [32m+[0m[0m user_data_replace_on_change          = false
+      [32m+[0m[0m vpc_security_group_ids               = (known after apply)
+
+      [32m+[0m[0m capacity_reservation_specification (known after apply)
+
+      [32m+[0m[0m cpu_options (known after apply)
+
+      [32m+[0m[0m ebs_block_device (known after apply)
+
+      [32m+[0m[0m enclave_options (known after apply)
+
+      [32m+[0m[0m ephemeral_block_device (known after apply)
+
+      [32m+[0m[0m instance_market_options (known after apply)
+
+      [32m+[0m[0m maintenance_options (known after apply)
+
+      [32m+[0m[0m metadata_options {
+          [32m+[0m[0m http_endpoint               = "enabled"
+          [32m+[0m[0m http_protocol_ipv6          = "disabled"
+          [32m+[0m[0m http_put_response_hop_limit = 1
+          [32m+[0m[0m http_tokens                 = "required"
+          [32m+[0m[0m instance_metadata_tags      = (known after apply)
+        }
+
+      [32m+[0m[0m network_interface (known after apply)
+
+      [32m+[0m[0m private_dns_name_options (known after apply)
+
+      [32m+[0m[0m root_block_device {
+          [32m+[0m[0m delete_on_termination = true
+          [32m+[0m[0m device_name           = (known after apply)
+          [32m+[0m[0m encrypted             = true
+          [32m+[0m[0m iops                  = (known after apply)
+          [32m+[0m[0m kms_key_id            = (known after apply)
+          [32m+[0m[0m tags_all              = (known after apply)
+          [32m+[0m[0m throughput            = (known after apply)
+          [32m+[0m[0m volume_id             = (known after apply)
+          [32m+[0m[0m volume_size           = 20
+          [32m+[0m[0m volume_type           = "gp3"
+        }
+    }
+
+[1m  # module.aws[0].aws_key_pair.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_key_pair" "this" {
+      [32m+[0m[0m arn             = (known after apply)
+      [32m+[0m[0m fingerprint     = (known after apply)
+      [32m+[0m[0m id              = (known after apply)
+      [32m+[0m[0m key_name        = "baseline-dev-key"
+      [32m+[0m[0m key_name_prefix = (known after apply)
+      [32m+[0m[0m key_pair_id     = (known after apply)
+      [32m+[0m[0m key_type        = (known after apply)
+      [32m+[0m[0m public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMFvJKJk3w492dj+c3zYYkjo6AiZy8EuYm0UrPe5EMp baseline-dev"
+      [32m+[0m[0m tags            = {
+          [32m+[0m[0m "ManagedBy" = "opentofu"
+        }
+      [32m+[0m[0m tags_all        = {
+          [32m+[0m[0m "ManagedBy" = "opentofu"
+        }
+    }
+
+[1m  # module.aws[0].aws_security_group.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "this" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "Disposable baseline host"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = ""
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "ICMP, so the box is diagnosable"
+              [32m+[0m[0m from_port        = -1
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "icmp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = -1
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "Tailscale direct path. Without it the tunnel still works over DERP, just slower."
+              [32m+[0m[0m from_port        = 41641
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "udp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 41641
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "54.202.225.125/32",
+                ]
+              [32m+[0m[0m description      = "SSH while the box is being built, closed by Ansible once Tailscale is up"
+              [32m+[0m[0m from_port        = 22
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 22
+            },
+        ]
+      [32m+[0m[0m name                   = "baseline-dev-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "ManagedBy" = "opentofu"
+          [32m+[0m[0m "Name"      = "baseline-dev-sg"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "ManagedBy" = "opentofu"
+          [32m+[0m[0m "Name"      = "baseline-dev-sg"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-093194f8335ae7783"
+    }
+
+[1mPlan:[0m 4 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m cloud_provider = "aws"
+  [32m+[0m[0m hostname       = "baseline-dev"
+  [32m+[0m[0m server_ipv4    = (known after apply)
+  [32m+[0m[0m ssh_command    = (known after apply)
+[0m[1mmodule.aws[0].aws_security_group.this: Creating...[0m[0m
+[0m[1mmodule.aws[0].aws_key_pair.this: Creating...[0m[0m
+[0m[1mmodule.aws[0].aws_key_pair.this: Creation complete after 1s [id=baseline-dev-key][0m
+[0m[1mmodule.aws[0].aws_security_group.this: Creation complete after 3s [id=sg-02021c4086718043b][0m
+[0m[1mmodule.aws[0].aws_instance.this: Creating...[0m[0m
+[0m[1mmodule.aws[0].aws_instance.this: Still creating... [10s elapsed][0m[0m
+[0m[1mmodule.aws[0].aws_instance.this: Creation complete after 12s [id=i-074b4c338b86da860][0m
+[0m[1mlocal_file.inventory[0]: Creating...[0m[0m
+[0m[1mlocal_file.inventory[0]: Creation complete after 0s [id=ccc554fd7819f6dfe26dac8c65fb3209b2136eb2][0m
+[0m[1m[32m
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0mcloud_provider = "aws"
+hostname = "baseline-dev"
+server_ipv4 = "35.86.96.155"
+ssh_command = "ssh deploy@35.86.96.155"
+=== wait for ssh ===
+ssh answered after about 20s
+=== converge ===
+
+PLAY [Converge the baseline] ***************************************************
+
+TASK [Gathering Facts] *********************************************************
+Wednesday 30 September 2026  05:41:00 +0000 (0:00:00.047)       0:00:00.047 *** 
+ok: [baseline-dev]
+
+TASK [Confirm this box came from cloud-init, not from someone's fingers] *******
+Wednesday 30 September 2026  05:41:05 +0000 (0:00:04.913)       0:00:04.961 *** 
+ok: [baseline-dev]
+
+TASK [Fail loudly if the marker is missing] ************************************
+Wednesday 30 September 2026  05:41:05 +0000 (0:00:00.664)       0:00:05.625 *** 
+skipping: [baseline-dev]
+
+TASK [Check whether the tailnet is already up] *********************************
+Wednesday 30 September 2026  05:41:05 +0000 (0:00:00.019)       0:00:05.645 *** 
+ok: [baseline-dev]
+
+TASK [Keep public SSH open only while there is no other way in] ****************
+Wednesday 30 September 2026  05:41:06 +0000 (0:00:00.636)       0:00:06.281 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Assert a supported distribution] ******************************
+Wednesday 30 September 2026  05:41:06 +0000 (0:00:00.057)       0:00:06.339 *** 
+ok: [baseline-dev] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [baseline : Set timezone] *************************************************
+Wednesday 30 September 2026  05:41:06 +0000 (0:00:00.034)       0:00:06.374 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Update apt cache] *********************************************
+Wednesday 30 September 2026  05:41:07 +0000 (0:00:00.734)       0:00:07.109 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Install baseline packages] ************************************
+Wednesday 30 September 2026  05:41:10 +0000 (0:00:03.490)       0:00:10.599 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Create additional admin users] ********************************
+Wednesday 30 September 2026  05:41:23 +0000 (0:00:12.900)       0:00:23.499 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Install keys for additional admin users] **********************
+Wednesday 30 September 2026  05:41:23 +0000 (0:00:00.017)       0:00:23.516 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Drop the cloud-init sshd fragment, this role owns sshd now] ***
+Wednesday 30 September 2026  05:41:23 +0000 (0:00:00.031)       0:00:23.548 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Install sshd hardening drop-in] *******************************
+Wednesday 30 September 2026  05:41:24 +0000 (0:00:00.604)       0:00:24.153 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Install sysctl hardening] *************************************
+Wednesday 30 September 2026  05:41:25 +0000 (0:00:01.112)       0:00:25.265 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Configure unattended upgrades] ********************************
+Wednesday 30 September 2026  05:41:26 +0000 (0:00:00.799)       0:00:26.064 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Configure fail2ban] *******************************************
+Wednesday 30 September 2026  05:41:27 +0000 (0:00:00.932)       0:00:26.997 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Enable fail2ban] **********************************************
+Wednesday 30 September 2026  05:41:28 +0000 (0:00:00.819)       0:00:27.816 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Apply firewall policy] ****************************************
+Wednesday 30 September 2026  05:41:28 +0000 (0:00:00.907)       0:00:28.724 *** 
+included: /home/ubuntu/work/phase-a-baseline/ansible/roles/baseline/tasks/firewall.yml for baseline-dev
+
+TASK [baseline : Default deny incoming] ****************************************
+Wednesday 30 September 2026  05:41:29 +0000 (0:00:00.033)       0:00:28.757 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Default allow outgoing] ***************************************
+Wednesday 30 September 2026  05:41:29 +0000 (0:00:00.924)       0:00:29.682 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow public SSH while the box is being built] ****************
+Wednesday 30 September 2026  05:41:30 +0000 (0:00:00.764)       0:00:30.447 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Close public SSH once the tailnet is up] **********************
+Wednesday 30 September 2026  05:41:31 +0000 (0:00:00.802)       0:00:31.249 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Allow SSH from the tailnet] ***********************************
+Wednesday 30 September 2026  05:41:31 +0000 (0:00:00.032)       0:00:31.282 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Allow tailscale direct connections] ***************************
+Wednesday 30 September 2026  05:41:32 +0000 (0:00:00.803)       0:00:32.085 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Enable ufw] ***************************************************
+Wednesday 30 September 2026  05:41:33 +0000 (0:00:00.771)       0:00:32.857 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Ensure state directory exists] ********************************
+Wednesday 30 September 2026  05:41:34 +0000 (0:00:01.247)       0:00:34.104 *** 
+changed: [baseline-dev]
+
+TASK [docker : Ensure keyring directory exists] ********************************
+Wednesday 30 September 2026  05:41:34 +0000 (0:00:00.363)       0:00:34.468 *** 
+ok: [baseline-dev]
+
+TASK [docker : Fetch the Docker signing key] ***********************************
+Wednesday 30 September 2026  05:41:35 +0000 (0:00:00.379)       0:00:34.847 *** 
+[WARNING]: Module remote_tmp /root/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when running as another user. To avoid this, create the remote_tmp dir with the correct permissions manually
+changed: [baseline-dev]
+
+TASK [docker : Add the Docker repository] **************************************
+Wednesday 30 September 2026  05:41:35 +0000 (0:00:00.691)       0:00:35.539 *** 
+changed: [baseline-dev]
+
+TASK [docker : Build the package list] *****************************************
+Wednesday 30 September 2026  05:41:43 +0000 (0:00:07.369)       0:00:42.908 *** 
+ok: [baseline-dev]
+
+TASK [docker : Install Docker] *************************************************
+Wednesday 30 September 2026  05:41:43 +0000 (0:00:00.040)       0:00:42.949 *** 
+changed: [baseline-dev]
+
+TASK [docker : Configure the Docker daemon] ************************************
+Wednesday 30 September 2026  05:42:06 +0000 (0:00:23.045)       0:01:05.995 *** 
+changed: [baseline-dev]
+
+TASK [docker : Enable Docker] **************************************************
+Wednesday 30 September 2026  05:42:07 +0000 (0:00:01.087)       0:01:07.082 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Ensure keyring directory exists] *****************************
+Wednesday 30 September 2026  05:42:08 +0000 (0:00:00.664)       0:01:07.747 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Fetch the Tailscale signing key] *****************************
+Wednesday 30 September 2026  05:42:08 +0000 (0:00:00.398)       0:01:08.146 *** 
+changed: [baseline-dev]
+
+TASK [tailscale : Add the Tailscale repository] ********************************
+Wednesday 30 September 2026  05:42:09 +0000 (0:00:00.776)       0:01:08.922 *** 
+changed: [baseline-dev]
+
+TASK [tailscale : Install Tailscale] *******************************************
+Wednesday 30 September 2026  05:42:16 +0000 (0:00:07.163)       0:01:16.086 *** 
+changed: [baseline-dev]
+
+TASK [tailscale : Enable tailscaled] *******************************************
+Wednesday 30 September 2026  05:42:25 +0000 (0:00:08.949)       0:01:25.036 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Read current tailscale state] ********************************
+Wednesday 30 September 2026  05:42:25 +0000 (0:00:00.606)       0:01:25.642 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Join the tailnet] ********************************************
+Wednesday 30 September 2026  05:42:26 +0000 (0:00:00.365)       0:01:26.007 *** 
+changed: [baseline-dev]
+
+TASK [tailscale : Confirm the node is actually online before anything closes the front door] ***
+Wednesday 30 September 2026  05:42:27 +0000 (0:00:01.682)       0:01:27.690 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Record the tailnet address] **********************************
+Wednesday 30 September 2026  05:42:28 +0000 (0:00:00.404)       0:01:28.094 *** 
+changed: [baseline-dev]
+
+TASK [tailscale : Ensure the host_vars directory exists] ***********************
+Wednesday 30 September 2026  05:42:29 +0000 (0:00:00.862)       0:01:28.956 *** 
+ok: [baseline-dev -> localhost]
+
+TASK [tailscale : Point later runs at the tailnet address] *********************
+Wednesday 30 September 2026  05:42:29 +0000 (0:00:00.335)       0:01:29.292 *** 
+changed: [baseline-dev -> localhost]
+
+TASK [Close public SSH now that the tailnet is verified] ***********************
+Wednesday 30 September 2026  05:42:30 +0000 (0:00:00.638)       0:01:29.931 *** 
+included: baseline for baseline-dev
+
+TASK [baseline : Default deny incoming] ****************************************
+Wednesday 30 September 2026  05:42:30 +0000 (0:00:00.037)       0:01:29.968 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Default allow outgoing] ***************************************
+Wednesday 30 September 2026  05:42:31 +0000 (0:00:01.420)       0:01:31.389 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow public SSH while the box is being built] ****************
+Wednesday 30 September 2026  05:42:33 +0000 (0:00:01.402)       0:01:32.791 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Close public SSH once the tailnet is up] **********************
+Wednesday 30 September 2026  05:42:33 +0000 (0:00:00.032)       0:01:32.824 *** 
+changed: [baseline-dev]
+
+TASK [baseline : Allow SSH from the tailnet] ***********************************
+Wednesday 30 September 2026  05:42:34 +0000 (0:00:00.942)       0:01:33.766 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow tailscale direct connections] ***************************
+Wednesday 30 September 2026  05:42:34 +0000 (0:00:00.853)       0:01:34.619 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Enable ufw] ***************************************************
+Wednesday 30 September 2026  05:42:35 +0000 (0:00:00.806)       0:01:35.425 *** 
+ok: [baseline-dev]
+
+TASK [restic : Fail early if the repository is not configured] *****************
+Wednesday 30 September 2026  05:42:36 +0000 (0:00:01.071)       0:01:36.496 *** 
+ok: [baseline-dev] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [restic : Download the pinned restic release] *****************************
+Wednesday 30 September 2026  05:42:36 +0000 (0:00:00.067)       0:01:36.564 *** 
+changed: [baseline-dev]
+
+TASK [restic : Unpack restic] **************************************************
+Wednesday 30 September 2026  05:42:37 +0000 (0:00:00.929)       0:01:37.494 *** 
+changed: [baseline-dev]
+
+TASK [restic : Mark the installed version] *************************************
+Wednesday 30 September 2026  05:42:39 +0000 (0:00:02.113)       0:01:39.608 *** 
+ok: [baseline-dev]
+
+TASK [restic : Make restic executable] *****************************************
+Wednesday 30 September 2026  05:42:40 +0000 (0:00:00.362)       0:01:39.971 *** 
+changed: [baseline-dev]
+
+TASK [restic : Create the restic config directory] *****************************
+Wednesday 30 September 2026  05:42:40 +0000 (0:00:00.396)       0:01:40.367 *** 
+changed: [baseline-dev]
+
+TASK [restic : Write the repository password] **********************************
+Wednesday 30 September 2026  05:42:41 +0000 (0:00:00.374)       0:01:40.742 *** 
+changed: [baseline-dev]
+
+TASK [restic : Write the repository environment] *******************************
+Wednesday 30 September 2026  05:42:41 +0000 (0:00:00.835)       0:01:41.577 *** 
+changed: [baseline-dev]
+
+TASK [restic : Initialise the repository if it is new] *************************
+Wednesday 30 September 2026  05:42:42 +0000 (0:00:00.834)       0:01:42.412 *** 
+ok: [baseline-dev]
+
+TASK [restic : Install the backup script] **************************************
+Wednesday 30 September 2026  05:42:43 +0000 (0:00:01.274)       0:01:43.686 *** 
+changed: [baseline-dev]
+
+TASK [restic : Install the restore test script] ********************************
+Wednesday 30 September 2026  05:42:44 +0000 (0:00:00.783)       0:01:44.470 *** 
+changed: [baseline-dev]
+
+TASK [restic : Install the backup service and timer] ***************************
+Wednesday 30 September 2026  05:42:45 +0000 (0:00:00.754)       0:01:45.224 *** 
+changed: [baseline-dev] => (item=restic-backup.service)
+changed: [baseline-dev] => (item=restic-backup.timer)
+
+TASK [restic : Enable the backup timer] ****************************************
+Wednesday 30 September 2026  05:42:47 +0000 (0:00:01.569)       0:01:46.794 *** 
+changed: [baseline-dev]
+
+TASK [restic : Write the canary file the restore test verifies] ****************
+Wednesday 30 September 2026  05:42:48 +0000 (0:00:01.479)       0:01:48.274 *** 
+changed: [baseline-dev]
+
+TASK [monitoring : Install the health check script] ****************************
+Wednesday 30 September 2026  05:42:49 +0000 (0:00:00.802)       0:01:49.076 *** 
+changed: [baseline-dev]
+
+TASK [monitoring : Install the health check service and timer] *****************
+Wednesday 30 September 2026  05:42:50 +0000 (0:00:00.842)       0:01:49.918 *** 
+changed: [baseline-dev] => (item=health-check.service)
+changed: [baseline-dev] => (item=health-check.timer)
+
+TASK [monitoring : Enable the health check timer] ******************************
+Wednesday 30 September 2026  05:42:51 +0000 (0:00:01.570)       0:01:51.489 *** 
+changed: [baseline-dev]
+
+TASK [monitoring : Run the health check once so there is a fresh stamp after a rebuild] ***
+Wednesday 30 September 2026  05:42:53 +0000 (0:00:01.302)       0:01:52.791 *** 
+ok: [baseline-dev]
+
+RUNNING HANDLER [docker : restart docker] **************************************
+Wednesday 30 September 2026  05:42:53 +0000 (0:00:00.397)       0:01:53.189 *** 
+changed: [baseline-dev]
+
+RUNNING HANDLER [monitoring : reload systemd] **********************************
+Wednesday 30 September 2026  05:42:55 +0000 (0:00:01.770)       0:01:54.959 *** 
+ok: [baseline-dev]
+
+RUNNING HANDLER [baseline : restart ssh] ***************************************
+Wednesday 30 September 2026  05:42:56 +0000 (0:00:00.881)       0:01:55.840 *** 
+changed: [baseline-dev]
+
+RUNNING HANDLER [baseline : reload sysctl] *************************************
+Wednesday 30 September 2026  05:42:56 +0000 (0:00:00.613)       0:01:56.454 *** 
+ok: [baseline-dev]
+
+RUNNING HANDLER [baseline : restart fail2ban] **********************************
+Wednesday 30 September 2026  05:42:57 +0000 (0:00:00.382)       0:01:56.836 *** 
+changed: [baseline-dev]
+
+PLAY RECAP *********************************************************************
+baseline-dev               : ok=70   changed=40   unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
+
+
+TASKS RECAP ********************************************************************
+Wednesday 30 September 2026  05:42:58 +0000 (0:00:00.977)       0:01:57.814 *** 
+=============================================================================== 
+docker : Install Docker ------------------------------------------------ 23.05s
+baseline : Install baseline packages ----------------------------------- 12.90s
+tailscale : Install Tailscale ------------------------------------------- 8.95s
+docker : Add the Docker repository -------------------------------------- 7.37s
+tailscale : Add the Tailscale repository -------------------------------- 7.16s
+Gathering Facts --------------------------------------------------------- 4.91s
+baseline : Update apt cache --------------------------------------------- 3.49s
+restic : Unpack restic -------------------------------------------------- 2.11s
+docker : restart docker ------------------------------------------------- 1.77s
+tailscale : Join the tailnet -------------------------------------------- 1.68s
+monitoring : Install the health check service and timer ----------------- 1.57s
+restic : Install the backup service and timer --------------------------- 1.57s
+restic : Enable the backup timer ---------------------------------------- 1.48s
+baseline : Default deny incoming ---------------------------------------- 1.42s
+baseline : Default allow outgoing --------------------------------------- 1.40s
+monitoring : Enable the health check timer ------------------------------ 1.30s
+restic : Initialise the repository if it is new ------------------------- 1.27s
+baseline : Enable ufw --------------------------------------------------- 1.25s
+baseline : Install sshd hardening drop-in ------------------------------- 1.11s
+docker : Configure the Docker daemon ------------------------------------ 1.09s

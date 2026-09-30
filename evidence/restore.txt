@@ -1,0 +1,5 @@
+restoring snapshot b2d956d5 of [/etc /srv /var/lib/baseline] at 2026-09-30 05:44:52.087992992 +0000 UTC by root@baseline-dev to /var/lib/baseline/restore-test
+Summary: Restored 4 / 1 files/dirs (45 B / 45 B) in 0:00
+OK: restore verified in 1s
+original_sha256=a135791b0e6e9947ce47220c058dfa83ed316f6cbb3c8ecde11beee1788b3975
+restored_sha256=a135791b0e6e9947ce47220c058dfa83ed316f6cbb3c8ecde11beee1788b3975

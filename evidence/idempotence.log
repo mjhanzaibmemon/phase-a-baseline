@@ -1,0 +1,320 @@
+=== idempotence ===
+
+PLAY [Converge the baseline] ***************************************************
+
+TASK [Gathering Facts] *********************************************************
+Wednesday 30 September 2026  05:42:58 +0000 (0:00:00.038)       0:00:00.038 *** 
+ok: [baseline-dev]
+
+TASK [Confirm this box came from cloud-init, not from someone's fingers] *******
+Wednesday 30 September 2026  05:43:01 +0000 (0:00:02.273)       0:00:02.311 *** 
+ok: [baseline-dev]
+
+TASK [Fail loudly if the marker is missing] ************************************
+Wednesday 30 September 2026  05:43:02 +0000 (0:00:01.728)       0:00:04.040 *** 
+skipping: [baseline-dev]
+
+TASK [Check whether the tailnet is already up] *********************************
+Wednesday 30 September 2026  05:43:02 +0000 (0:00:00.021)       0:00:04.062 *** 
+ok: [baseline-dev]
+
+TASK [Keep public SSH open only while there is no other way in] ****************
+Wednesday 30 September 2026  05:43:03 +0000 (0:00:00.666)       0:00:04.729 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Assert a supported distribution] ******************************
+Wednesday 30 September 2026  05:43:03 +0000 (0:00:00.039)       0:00:04.769 *** 
+ok: [baseline-dev] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [baseline : Set timezone] *************************************************
+Wednesday 30 September 2026  05:43:03 +0000 (0:00:00.032)       0:00:04.801 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Update apt cache] *********************************************
+Wednesday 30 September 2026  05:43:04 +0000 (0:00:00.746)       0:00:05.548 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Install baseline packages] ************************************
+Wednesday 30 September 2026  05:43:05 +0000 (0:00:01.115)       0:00:06.663 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Create additional admin users] ********************************
+Wednesday 30 September 2026  05:43:07 +0000 (0:00:01.539)       0:00:08.203 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Install keys for additional admin users] **********************
+Wednesday 30 September 2026  05:43:07 +0000 (0:00:00.019)       0:00:08.223 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Drop the cloud-init sshd fragment, this role owns sshd now] ***
+Wednesday 30 September 2026  05:43:07 +0000 (0:00:00.031)       0:00:08.254 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Install sshd hardening drop-in] *******************************
+Wednesday 30 September 2026  05:43:07 +0000 (0:00:00.525)       0:00:08.780 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Install sysctl hardening] *************************************
+Wednesday 30 September 2026  05:43:08 +0000 (0:00:00.940)       0:00:09.721 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Configure unattended upgrades] ********************************
+Wednesday 30 September 2026  05:43:09 +0000 (0:00:01.011)       0:00:10.733 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Configure fail2ban] *******************************************
+Wednesday 30 September 2026  05:43:10 +0000 (0:00:00.824)       0:00:11.557 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Enable fail2ban] **********************************************
+Wednesday 30 September 2026  05:43:11 +0000 (0:00:00.913)       0:00:12.470 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Apply firewall policy] ****************************************
+Wednesday 30 September 2026  05:43:12 +0000 (0:00:00.823)       0:00:13.293 *** 
+included: /home/ubuntu/work/phase-a-baseline/ansible/roles/baseline/tasks/firewall.yml for baseline-dev
+
+TASK [baseline : Default deny incoming] ****************************************
+Wednesday 30 September 2026  05:43:12 +0000 (0:00:00.031)       0:00:13.325 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Default allow outgoing] ***************************************
+Wednesday 30 September 2026  05:43:14 +0000 (0:00:01.827)       0:00:15.153 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow public SSH while the box is being built] ****************
+Wednesday 30 September 2026  05:43:15 +0000 (0:00:01.566)       0:00:16.719 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Close public SSH once the tailnet is up] **********************
+Wednesday 30 September 2026  05:43:15 +0000 (0:00:00.034)       0:00:16.753 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow SSH from the tailnet] ***********************************
+Wednesday 30 September 2026  05:43:16 +0000 (0:00:00.815)       0:00:17.568 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow tailscale direct connections] ***************************
+Wednesday 30 September 2026  05:43:17 +0000 (0:00:00.795)       0:00:18.364 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Enable ufw] ***************************************************
+Wednesday 30 September 2026  05:43:17 +0000 (0:00:00.727)       0:00:19.092 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Ensure state directory exists] ********************************
+Wednesday 30 September 2026  05:43:19 +0000 (0:00:01.303)       0:00:20.395 *** 
+ok: [baseline-dev]
+
+TASK [docker : Ensure keyring directory exists] ********************************
+Wednesday 30 September 2026  05:43:19 +0000 (0:00:00.433)       0:00:20.829 *** 
+ok: [baseline-dev]
+
+TASK [docker : Fetch the Docker signing key] ***********************************
+Wednesday 30 September 2026  05:43:20 +0000 (0:00:00.394)       0:00:21.224 *** 
+ok: [baseline-dev]
+
+TASK [docker : Add the Docker repository] **************************************
+Wednesday 30 September 2026  05:43:20 +0000 (0:00:00.716)       0:00:21.940 *** 
+ok: [baseline-dev]
+
+TASK [docker : Build the package list] *****************************************
+Wednesday 30 September 2026  05:43:21 +0000 (0:00:00.670)       0:00:22.611 *** 
+ok: [baseline-dev]
+
+TASK [docker : Install Docker] *************************************************
+Wednesday 30 September 2026  05:43:21 +0000 (0:00:00.041)       0:00:22.653 *** 
+ok: [baseline-dev]
+
+TASK [docker : Configure the Docker daemon] ************************************
+Wednesday 30 September 2026  05:43:24 +0000 (0:00:03.027)       0:00:25.680 *** 
+ok: [baseline-dev]
+
+TASK [docker : Enable Docker] **************************************************
+Wednesday 30 September 2026  05:43:25 +0000 (0:00:00.838)       0:00:26.519 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Ensure keyring directory exists] *****************************
+Wednesday 30 September 2026  05:43:25 +0000 (0:00:00.578)       0:00:27.097 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Fetch the Tailscale signing key] *****************************
+Wednesday 30 September 2026  05:43:26 +0000 (0:00:00.407)       0:00:27.505 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Add the Tailscale repository] ********************************
+Wednesday 30 September 2026  05:43:27 +0000 (0:00:00.631)       0:00:28.136 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Install Tailscale] *******************************************
+Wednesday 30 September 2026  05:43:27 +0000 (0:00:00.522)       0:00:28.658 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Enable tailscaled] *******************************************
+Wednesday 30 September 2026  05:43:30 +0000 (0:00:02.771)       0:00:31.429 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Read current tailscale state] ********************************
+Wednesday 30 September 2026  05:43:30 +0000 (0:00:00.597)       0:00:32.027 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Join the tailnet] ********************************************
+Wednesday 30 September 2026  05:43:31 +0000 (0:00:00.380)       0:00:32.408 *** 
+skipping: [baseline-dev]
+
+TASK [tailscale : Confirm the node is actually online before anything closes the front door] ***
+Wednesday 30 September 2026  05:43:31 +0000 (0:00:00.034)       0:00:32.442 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Record the tailnet address] **********************************
+Wednesday 30 September 2026  05:43:31 +0000 (0:00:00.406)       0:00:32.848 *** 
+ok: [baseline-dev]
+
+TASK [tailscale : Ensure the host_vars directory exists] ***********************
+Wednesday 30 September 2026  05:43:32 +0000 (0:00:00.797)       0:00:33.645 *** 
+ok: [baseline-dev -> localhost]
+
+TASK [tailscale : Point later runs at the tailnet address] *********************
+Wednesday 30 September 2026  05:43:32 +0000 (0:00:00.345)       0:00:33.991 *** 
+ok: [baseline-dev -> localhost]
+
+TASK [Close public SSH now that the tailnet is verified] ***********************
+Wednesday 30 September 2026  05:43:33 +0000 (0:00:00.681)       0:00:34.673 *** 
+included: baseline for baseline-dev
+
+TASK [baseline : Default deny incoming] ****************************************
+Wednesday 30 September 2026  05:43:33 +0000 (0:00:00.039)       0:00:34.713 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Default allow outgoing] ***************************************
+Wednesday 30 September 2026  05:43:35 +0000 (0:00:01.514)       0:00:36.227 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow public SSH while the box is being built] ****************
+Wednesday 30 September 2026  05:43:36 +0000 (0:00:01.528)       0:00:37.756 *** 
+skipping: [baseline-dev]
+
+TASK [baseline : Close public SSH once the tailnet is up] **********************
+Wednesday 30 September 2026  05:43:36 +0000 (0:00:00.033)       0:00:37.789 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow SSH from the tailnet] ***********************************
+Wednesday 30 September 2026  05:43:37 +0000 (0:00:00.815)       0:00:38.605 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Allow tailscale direct connections] ***************************
+Wednesday 30 September 2026  05:43:38 +0000 (0:00:00.793)       0:00:39.398 *** 
+ok: [baseline-dev]
+
+TASK [baseline : Enable ufw] ***************************************************
+Wednesday 30 September 2026  05:43:39 +0000 (0:00:00.936)       0:00:40.334 *** 
+ok: [baseline-dev]
+
+TASK [restic : Fail early if the repository is not configured] *****************
+Wednesday 30 September 2026  05:43:40 +0000 (0:00:01.221)       0:00:41.556 *** 
+ok: [baseline-dev] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [restic : Download the pinned restic release] *****************************
+Wednesday 30 September 2026  05:43:40 +0000 (0:00:00.069)       0:00:41.626 *** 
+ok: [baseline-dev]
+
+TASK [restic : Unpack restic] **************************************************
+Wednesday 30 September 2026  05:43:41 +0000 (0:00:00.577)       0:00:42.203 *** 
+ok: [baseline-dev]
+
+TASK [restic : Mark the installed version] *************************************
+Wednesday 30 September 2026  05:43:41 +0000 (0:00:00.372)       0:00:42.576 *** 
+ok: [baseline-dev]
+
+TASK [restic : Make restic executable] *****************************************
+Wednesday 30 September 2026  05:43:41 +0000 (0:00:00.428)       0:00:43.004 *** 
+ok: [baseline-dev]
+
+TASK [restic : Create the restic config directory] *****************************
+Wednesday 30 September 2026  05:43:42 +0000 (0:00:00.438)       0:00:43.442 *** 
+ok: [baseline-dev]
+
+TASK [restic : Write the repository password] **********************************
+Wednesday 30 September 2026  05:43:42 +0000 (0:00:00.399)       0:00:43.842 *** 
+ok: [baseline-dev]
+
+TASK [restic : Write the repository environment] *******************************
+Wednesday 30 September 2026  05:43:43 +0000 (0:00:00.903)       0:00:44.746 *** 
+ok: [baseline-dev]
+
+TASK [restic : Initialise the repository if it is new] *************************
+Wednesday 30 September 2026  05:43:44 +0000 (0:00:00.881)       0:00:45.627 *** 
+ok: [baseline-dev]
+
+TASK [restic : Install the backup script] **************************************
+Wednesday 30 September 2026  05:43:45 +0000 (0:00:01.435)       0:00:47.062 *** 
+ok: [baseline-dev]
+
+TASK [restic : Install the restore test script] ********************************
+Wednesday 30 September 2026  05:43:46 +0000 (0:00:00.955)       0:00:48.018 *** 
+ok: [baseline-dev]
+
+TASK [restic : Install the backup service and timer] ***************************
+Wednesday 30 September 2026  05:43:47 +0000 (0:00:01.065)       0:00:49.083 *** 
+ok: [baseline-dev] => (item=restic-backup.service)
+ok: [baseline-dev] => (item=restic-backup.timer)
+
+TASK [restic : Enable the backup timer] ****************************************
+Wednesday 30 September 2026  05:43:49 +0000 (0:00:01.830)       0:00:50.914 *** 
+ok: [baseline-dev]
+
+TASK [restic : Write the canary file the restore test verifies] ****************
+Wednesday 30 September 2026  05:43:50 +0000 (0:00:01.169)       0:00:52.083 *** 
+ok: [baseline-dev]
+
+TASK [monitoring : Install the health check script] ****************************
+Wednesday 30 September 2026  05:43:51 +0000 (0:00:00.851)       0:00:52.935 *** 
+ok: [baseline-dev]
+
+TASK [monitoring : Install the health check service and timer] *****************
+Wednesday 30 September 2026  05:43:52 +0000 (0:00:00.801)       0:00:53.737 *** 
+ok: [baseline-dev] => (item=health-check.service)
+ok: [baseline-dev] => (item=health-check.timer)
+
+TASK [monitoring : Enable the health check timer] ******************************
+Wednesday 30 September 2026  05:43:54 +0000 (0:00:01.643)       0:00:55.380 *** 
+ok: [baseline-dev]
+
+TASK [monitoring : Run the health check once so there is a fresh stamp after a rebuild] ***
+Wednesday 30 September 2026  05:43:55 +0000 (0:00:00.879)       0:00:56.260 *** 
+ok: [baseline-dev]
+
+PLAY RECAP *********************************************************************
+baseline-dev               : ok=64   changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+
+TASKS RECAP ********************************************************************
+Wednesday 30 September 2026  05:43:55 +0000 (0:00:00.428)       0:00:56.689 *** 
+=============================================================================== 
+docker : Install Docker ------------------------------------------------- 3.03s
+tailscale : Install Tailscale ------------------------------------------- 2.77s
+Gathering Facts --------------------------------------------------------- 2.27s
+restic : Install the backup service and timer --------------------------- 1.83s
+baseline : Default deny incoming ---------------------------------------- 1.83s
+Confirm this box came from cloud-init, not from someone's fingers ------- 1.73s
+monitoring : Install the health check service and timer ----------------- 1.64s
+baseline : Default allow outgoing --------------------------------------- 1.57s
+baseline : Install baseline packages ------------------------------------ 1.54s
+baseline : Default allow outgoing --------------------------------------- 1.53s
+baseline : Default deny incoming ---------------------------------------- 1.51s
+restic : Initialise the repository if it is new ------------------------- 1.44s
+baseline : Enable ufw --------------------------------------------------- 1.30s
+baseline : Enable ufw --------------------------------------------------- 1.22s
+restic : Enable the backup timer ---------------------------------------- 1.17s
+baseline : Update apt cache --------------------------------------------- 1.12s
+restic : Install the restore test script -------------------------------- 1.07s
+baseline : Install sysctl hardening ------------------------------------- 1.01s
+restic : Install the backup script -------------------------------------- 0.96s
+baseline : Install sshd hardening drop-in ------------------------------- 0.94s
+A2 passed: the second run changed nothing

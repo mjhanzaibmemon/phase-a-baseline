@@ -1,0 +1,4 @@
+/root/.ssh/authorized_keys
+256 SHA256:QpztZ25unkyyYoV0KLKBzTbTWtFtjTGyvMuBPxdnieM baseline-dev-key (ED25519)
+/home/deploy/.ssh/authorized_keys
+256 SHA256:QpztZ25unkyyYoV0KLKBzTbTWtFtjTGyvMuBPxdnieM baseline-dev (ED25519)

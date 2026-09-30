@@ -1,4 +1,12 @@
-# Listening sockets allowed on non-loopback addresses, written as port/proto.
-# Loopback listeners are ignored because nothing outside the box can reach them.
+# Sockets allowed to be reachable from outside the host, as port/proto.
+#
+# Loopback and tailnet-bound sockets are filtered out before this list is applied:
+# loopback is not reachable from anywhere else, and a tailnet socket is only
+# reachable by devices already on the tailnet. Tailscale also binds a random high
+# port on each of its own addresses, so matching those by number would never hold.
+#
+# Anything that appears here and is not in this file fails the check.
+
 22/tcp
 41641/udp
+68/udp

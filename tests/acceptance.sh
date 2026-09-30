@@ -16,16 +16,38 @@ if [[ -z "${TARGET:-}" ]]; then
     echo "No TARGET set and no inventory at $INVENTORY"
     exit 2
   fi
-  HOST=$(grep -m1 'ansible_host:' "$INVENTORY" | awk '{print $2}')
-  WHO=$(grep -m1 'ansible_user:' "$INVENTORY" | awk '{print $2}')
+
+  # Ask Ansible rather than parsing the file. Once the node is on the tailnet a
+  # host_vars entry overrides the public address OpenTofu wrote, and the checks
+  # have to follow the same path Ansible does or they test the wrong door.
+  if command -v ansible-inventory >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+    read -r HOST WHO < <(cd "$ROOT/ansible" &&
+      ansible-inventory --list 2>/dev/null |
+      jq -r '._meta.hostvars | to_entries[0].value | "\(.ansible_host) \(.ansible_user)"')
+  fi
+
+  # Fall back to reading the file, quoted keys included, if that did not work.
+  if [[ -z "${HOST:-}" || "$HOST" == "null" ]]; then
+    HOST=$(sed -nE 's/.*"?ansible_host"?: *"?([^"[:space:]]+)"?.*/\1/p' "$INVENTORY" | head -1)
+    WHO=$(sed -nE 's/.*"?ansible_user"?: *"?([^"[:space:]]+)"?.*/\1/p' "$INVENTORY" | head -1)
+  fi
+
+  if [[ -z "${HOST:-}" || -z "${WHO:-}" ]]; then
+    echo "Could not work out which host to check"
+    exit 2
+  fi
   TARGET="${WHO}@${HOST}"
 fi
+
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/baseline_ed25519}"
+SSH_OPTS=(-o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new)
+[[ -f "$SSH_KEY" ]] && SSH_OPTS+=(-i "$SSH_KEY")
 
 PASS=0
 FAIL=0
 
 remote() {
-  ssh -o BatchMode=yes -o ConnectTimeout=10 "$TARGET" "$@"
+  ssh "${SSH_OPTS[@]}" "$TARGET" "$@"
 }
 
 allowlist() {
@@ -72,11 +94,18 @@ report A4b "authorized_keys inventory written for review" pass
 
 # A4c: no unexpected listening sockets on anything except loopback
 remote 'sudo ss -tulpnH' > "$EVIDENCE/listeners-raw.txt" 2>&1
+# What matters is whether a socket is reachable from outside, not whether it exists.
+# Loopback is nobody's business but the host's, and a socket bound to the tailnet
+# address is only reachable by devices already on the tailnet, so neither belongs in
+# the "unexpected listener" list. Tailscale binds a random high port on both of its
+# own addresses, which is why matching by port number alone would never be stable.
 awk '{
   n = split($5, a, ":");
   port = a[n];
   addr = substr($5, 1, length($5) - length(port) - 1);
-  if (addr !~ /^127\./ && addr != "[::1]") {
+  is_loopback = (addr ~ /^127\./ || addr == "[::1]");
+  is_tailnet  = (addr ~ /^100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\./ || addr ~ /^\[fd7a:115c:a1e0/);
+  if (!is_loopback && !is_tailnet) {
     print port "/" ($1 == "udp" ? "udp" : "tcp");
   }
 }' "$EVIDENCE/listeners-raw.txt" | sort -u > "$EVIDENCE/listeners.txt"

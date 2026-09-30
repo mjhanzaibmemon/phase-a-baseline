@@ -6,9 +6,10 @@ terraform.tfvars
 *.auto.tfvars
 ansible/inventory/hosts.yml
 *.retry
-evidence/*
-!evidence/.gitkeep
+# Evidence is the deliverable here, so it is committed rather than ignored. It is
+# scanned for secrets before every commit and contains only command output.
 secrets/
 *.pem
 *.key
 ansible/group_vars/all/vault.yml
+ansible/inventory/host_vars/

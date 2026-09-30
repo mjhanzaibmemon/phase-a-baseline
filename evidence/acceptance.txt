@@ -1,0 +1,12 @@
+Target:   deploy@100.83.249.29
+Evidence: /home/ubuntu/work/phase-a-baseline/evidence
+
+PASS  A3    sshd: no root login, no password auth, keys only
+PASS  A4a   no unexpected user accounts
+PASS  A4b   authorized_keys inventory written for review
+PASS  A4c   no unexpected listening sockets
+PASS  A5    health check passes and the stamp is fresh
+PASS  A6    a restic snapshot exists
+PASS  A7    restore verified against the canary checksum
+
+passed: 7   failed: 0
