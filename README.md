@@ -57,3 +57,8 @@ A backup nobody has restored is a file taking up space. `restic-restore-test.sh`
 ## Acceptance
 
 See ACCEPTANCE.md. Twelve conditions, each mapped to the check that proves it and the evidence file it writes.
+
+## Using this
+
+Published so people can read it and judge the work, not as open source. See LICENSE.
+Ask before reusing any of it and the answer is usually yes.
